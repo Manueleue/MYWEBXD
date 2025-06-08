@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>🔥 TurboBot Premium 🔥</title>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body, html {
+    margin: 0; padding: 0; 
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0b0b0b 20%, #202020 80%);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #eee;
+  }
+
+  /* Container for the entire bot */
+  #botContainer {
+    position: relative;
+    width: 430px;
+    max-width: 95vw;
+    height: 700px;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(255, 87, 34, 0.85);
+    background: rgba(10,10,10, 0.85);
+    backdrop-filter: saturate(180%) blur(20px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Background image for the chat area with blend */
+  #chat {
+    flex-grow: 1;
+    padding: 30px 28px 24px;
+    overflow-y: auto;
+    background-image: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: inset 0 0 0 2000px rgba(20,20,20,0.75);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* Scrollbar styling */
+  #chat::-webkit-scrollbar {
+    width: 10px;
+  }
+  #chat::-webkit-scrollbar-track {
+    background: rgba(255, 87, 34, 0.05);
+  }
+  #chat::-webkit-scrollbar-thumb {
+    background: rgba(255, 87, 34, 0.6);
+    border-radius: 8px;
+  }
+
+  /* Header with gradient glow */
+  #header {
+    background: linear-gradient(90deg, #ff5e00, #ff841a);
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    padding: 28px 10px;
+    color: #fff;
+    text-shadow:
+      0 0 10px #ff5722,
+      0 0 25px #ff5722,
+      0 0 40px #ff7645,
+      0 0 60px #ff7645;
+    user-select: none;
+  }
+
+  /* Messages styling */
+  .message {
+    max-width: 80%;
+    font-size: 1rem;
+    padding: 14px 28px;
+    border-radius: 40px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    line-height: 1.4;
+    word-break: break-word;
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  .bot {
+    background: linear-gradient(135deg, #ff5722cc, #ff7b4280);
+    color: #fff;
+    align-self: flex-start;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 40px;
+    box-shadow: 0 0 14px #ff572270;
+    font-weight: 600;
+  }
+
+  .user {
+    background: #4a81e8;
+    color: #d0d9ff;
+    align-self: flex-end;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 40px;
+    box-shadow: 0 0 14px #3c61c9cc;
+    font-weight: 600;
+  }
+
+  /* Input container with floating effect */
+  #inputContainer {
+    background: linear-gradient(90deg, #ff5722, #ff8145);
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    box-shadow:
+      inset 0 -2px 8px rgba(255,255,255,0.15),
+      0 -10px 40px rgba(255,87,34,0.25);
+  }
+
+  #userInput {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    border-radius: 36px;
+    padding: 16px 26px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #222;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    transition: box-shadow 0.3s ease;
+  }
+  #userInput::placeholder {
+    color: #a7a7a7;
+    font-weight: 500;
+  }
+  #userInput:focus {
+    box-shadow: 0 2px 14px rgba(255, 87, 34, 0.6);
+  }
+
+  #sendBtn {
+    margin-left: 18px;
+    border-radius: 36px;
+    background:#440b0b;
+    color: white;
+    font-weight: 800;
+    font-size: 1.2rem;
+    border: none;
+    padding: 16px 36px;
+    cursor: pointer;
+    box-shadow:
+      0 6px 14px #ff5722,
+      0 0 20px #ff5722;
+    text-transform: uppercase;
+    user-select: none;
+    transition: all 0.25s ease;
+  }
+  #sendBtn:enabled {
+    background: linear-gradient(45deg,#ff5722,#ff8145);
+    box-shadow:
+      0 8px 24px #ff6720,
+      0 0 35px #ff8145;
+  }
+  #sendBtn:hover:enabled {
+    box-shadow:
+      0 12px 30px #ff8245,
+      0 0 48px #ff9556;
+    transform: scale(1.05);
+  }
+  #sendBtn:disabled {
+    background: #b36445;
+    cursor: default;
+    box-shadow: none;
+    transform: none;
+  }
+  #sendBtn:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 2px;
+  }
+
+  /* Responsive */
+  @media(max-width: 480px){
+    #botContainer {
+      height: 85vh;
+      width: 100vw;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    #header {
+      font-size: 1.7rem;
+      padding: 20px 10px;
+    }
+    #inputContainer {
+      padding: 16px 14px;
+    }
+    #sendBtn {
+      font-size: 1rem;
+      padding: 14px 28px;
+      margin-left: 12px;
+    }
+    #userInput {
+      font-size: 1rem;
+      padding: 14px 22px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div id="botContainer" role="main" aria-label="Chat TurboBot Premium">
+
+  <div id="header" tabindex="0" aria-live="polite" aria-atomic="true">🔥 TurboBot Premium 🔥</div>
+
+  <div id="chat" aria-live="polite" aria-atomic="false" role="log"></div>
+
+  <div id="inputContainer" aria-label="Área para escribir mensaje">
+    <input type="text" id="userInput" aria-label="Escriba su mensaje aquí" placeholder='Escribe "/start" para empezar...' autocomplete="off" spellcheck="false" />
+    <button id="sendBtn" aria-label="Enviar mensaje" disabled>Enviar</button>
+  </div>
+
+</div>
+
+<script>
+  (() => {
+    const chat = document.getElementById('chat');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    // Cuentas que pidió, con la nueva invitación agregada
+    const plataformas = {
+      "Deezer Premium": [
+        "Cuenta de Deezer premium:\njunuhi@logsmarter.net : Manuel503@@"
+      ],
+      "Crunchyroll Premium": [
+        "Cuenta de Crunchyroll premium:\njunuhi@logsmarter.net : Manuel503@@"
+      ],
+      "Prime Video Premium": [
+        "Cuenta de Prime Video premium:\nluismanuel504504@gmail.com : Manuel503@@"
+      ],
+      "Tidal Premium Family": [
+        "Tidal premium family:\nluismanuel504504@gmail.com : Manuel503@@"
+      ],
+      "Fubo TV Premium": [
+        "Fubo TV premium:\njunuhi@logsmarter.net : Manuel503@@"
+      ],
+      "YouTube Premium Family (Invitación 1)": [
+        `Invitación para YouTube premium family:<br><a href="https://families.google.com/u/3/join/promo/d-BwJuIc1lAof5LOFeENbXs8hq8dbw?pli=1" target="_blank" rel="noopener" style="color:#ffd680; text-decoration:underline;">https://families.google.com/u/3/join/promo/d-BwJuIc1lAof5LOFeENbXs8hq8dbw?pli=1</a>`
+      ],
+      "YouTube Premium Family (Invitación 2)": [
+        `Invitación alternativa para YouTube premium family:<br><a href="https://notifications.googleapis.com/email/redirect?t=AFG8qyXve79x7htfMdMcmkuemI0fLLLctVncMLrINNg9bQp9yTcjMPSepYRbJAHbqpWk_yKsqfrZZQQEjpCCfXbouSOOZeut5jpcYnB8e3m8qm8FvgqoBZMxKQzLitc4Nzg-PqVdPu17JPiCMAw34g6xaj4cDhE7mWDFpkdS3cXy04-XoFBscwUT-2NCe86sD7QATAED4wObikaLSxJIU86Y_rImX29DSKVLBtAL3o5QqyHH67XQRghCiQ8BdHKXZnwySu1hVLup6CGU-ftmwfgYxQNXpsnLX1ELwk7p7OAdQg61Q5DnzS9rbl6QSWxZfINxZA3eDguzVmDuQcnYhKWee79vBAGLPiKT8Wb9&r=eJxVzLEKwjAURuG3cbPBQaxC0SoVFNHV9TZNmys3-WuTUHx7Lbq4HviOjbEPG6VIayQfQ9YBnZhMw6ny2w4WCGbYavjIPpnC_kxLjoXNn3mAveoHOKhmvh_P6aQXUqJdXm5HU13re8jtM2_qcVY5YikkcXD0uQq9SGi13nVTn15vrbA5bQ&s=ALHZ2r6w8LTmfCpJ7CjXY34mndsY" target="_blank" rel="noopener" style="color:#ffd680; text-decoration:underline;">Enlace alternativo para invitación</a>`
+      ]
+    };
+
+    let initialized = false;
+
+    // Añade mensaje al chat, soporta html para saltos y enlaces
+    function addMessage(text, sender = 'bot') {
+      const div = document.createElement('div');
+      div.classList.add('message', sender);
+      div.tabIndex = 0;
+      div.innerHTML = text.replace(/\n/g, '<br>');
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+      if(sender === 'bot') {
+        div.setAttribute('role', 'alert');
+      }
+    }
+
+    // Borra mensaje anterior de botones, agrega nuevos botones disponibles
+    function renderPlatformButtons() {
+      const old = document.getElementById('buttonsContainer');
+      if(old) old.remove();
+
+      const container = document.createElement('div');
+      container.id = 'buttonsContainer';
+      container.setAttribute('aria-label', 'Opciones de plataformas');
+      container.style.marginTop = '18px';
+      container.style.display = 'flex';
+      container.style.flexWrap = 'wrap';
+      container.style.justifyContent = 'center';
+      container.style.gap = '16px';
+
+      Object.keys(plataformas).forEach(plataforma => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-platform';
+        btn.type = 'button';
+        btn.textContent = plataforma;
+        btn.addEventListener('click', () => showAccounts(plataforma));
+        container.appendChild(btn);
+      });
+
+      chat.appendChild(container);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    // Muestra las cuentas seleccionadas y vuelve a mostrar botones (permitiendo reelección)
+    function showAccounts(plataforma) {
+      addMessage(`<strong>🎯 Cuentas para <span style="color:#ffd680;">${plataforma}</span>:</strong><br><br>${plataformas[plataforma].join('<br>')}`);
+      renderPlatformButtons();
+    }
+
+    // Control de flujo según inputs del usuario
+    function handleUserInput(text) {
+      const normalized = text.trim().toLowerCase();
+      if(normalized === '/start' || !initialized) {
+        addMessage('✨ ¡Bienvenido! Selecciona una plataforma de la lista para ver las cuentas exclusivas:');
+        renderPlatformButtons();
+        initialized = true;
+      } else {
+        addMessage('⚠️ Usa los botones para seleccionar una plataforma.');
+      }
+    }
+
+    // Envío de mensaje con validación
+    function sendMessage() {
+      const text = userInput.value.trim();
+      if(!text) return;
+      addMessage(text, 'user');
+      userInput.value = '';
+      sendBtn.disabled = true;
+      handleUserInput(text);
+    }
+
+    // Activar botón cuando hay texto
+    userInput.addEventListener('input', () => {
+      sendBtn.disabled = userInput.value.trim().length === 0;
+    });
+
+    // Evento click y enter para envío
+    sendBtn.addEventListener('click', sendMessage);
+    userInput.addEventListener('keydown', e => {
+      if(e.key === 'Enter' && !sendBtn.disabled) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    // Mensaje inicial para UX
+    function startBot() {
+      addMessage('🤖 TurboBot Premium está listo y esperando tus comandos...');
+      addMessage('🖥️ Escribe <code style="background:#333;padding:2px 8px;border-radius:5px;">/start</code> para comenzar y ver las cuentas premium.');
+      userInput.disabled = false;
+      userInput.focus();
+    }
+
+    startBot();
+  })();
+</script>
+
+</body>
+</html>
